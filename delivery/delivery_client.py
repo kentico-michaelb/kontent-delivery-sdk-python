@@ -33,9 +33,7 @@ class DeliveryClient:
         return content_item
 
     def get_items(self,*args):
-        print(args)
         url = self.url_builder.get_items_url(args)
-        print(url)
         api_response = self.send_http_request(url)
 
         delivery_items_response = DeliveryItemListingResponse(api_response)
