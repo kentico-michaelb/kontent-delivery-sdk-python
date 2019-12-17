@@ -27,8 +27,8 @@ class UrlBuilder:
 
         for count, arg in enumerate(*args):
             if count == 0:
-                url += '?{}'.format(arg.create_query_string())
+                url += '?{}'.format(arg.query_string)                
             else:
-                url += '&{}'.format(arg.create_query_string())                
-
+                url += '&{}'.format(arg.query_string)                
+            print(url)
         return url

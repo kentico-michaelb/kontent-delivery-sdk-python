@@ -2,101 +2,80 @@ class AllFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = ','.join(value)
-
-    def create_query_string(self):
-        query_string = '{0}[all]={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
-
+        self.filter = '[all]='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
 
 class AnyFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = ','.join(value)
-
-    def create_query_string(self):
-        query_string = '{0}[any]={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
+        self.filter = '[any]='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
 
 
 class EqualsFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = value
+        self.filter = '='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
 
-    def create_query_string(self):
-        query_string = '{0}={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
 
 class GreaterThanFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = value
-
-    def create_query_string(self):
-        query_string = '{0}[gt]={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
+        self.filter = '[gt]='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
+        
 
 class GreaterThanOrEqualToFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = value
-
-    def create_query_string(self):
-        query_string = '{0}[gte]={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
+        self.filter = '[gte]='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
 
     
 class InFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = ','.join(value)
-
-    def create_query_string(self):
-        query_string = '{0}[in]={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
+        self.filter = '[in]='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
 
 
 class LessThanFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = value
-
-    def create_query_string(self):
-        query_string = '{0}[lt]={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
+        self.filter = '[lt]='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
     
     
 class LessThanOrEqualToFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = value
-
-    def create_query_string(self):
-        query_string = '{0}[lte]={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
+        self.filter = '[lte]='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
     
     
 class RangeFilter:
     def __init__(self, codename, value):
         self.codename = codename
         self.value = ','.join(value)
-
-    def create_query_string(self):
-        query_string = '{0}[range]={1}'.format(self.codename, self.value)
-        cleaned_query_string = query_string_formatter(query_string, self.codename)
-        return cleaned_query_string
+        self.filter = '[range]='
+        self.query_string= create_query_string(self.codename, self.filter, self.value)
 
 
-def query_string_formatter(query_string, codename):
-    if 'type' in codename or 'codename' in codename:        
-        query_string = query_string.lower()
-        query_string = query_string.replace(' ', '_').replace('-', '_')
+def create_query_string(codename, query_filter, value):
+    query_string = '{0}{1}{2}'.format(codename, query_filter, value)
+    if 'type' in codename or 'codename' in codename:   
+        query_string = query_string_formatter(query_string, codename)
+    return query_string 
+
+def query_string_formatter(query_string, codename):      
+    query_string = query_string.lower()
+    query_string = query_string.replace(' ', '_').replace('-', '_')
     return query_string
