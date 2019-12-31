@@ -30,5 +30,4 @@ class UrlBuilder:
                 url += '?{}'.format(arg.query_string)                
             else:
                 url += '&{}'.format(arg.query_string)                
-            print(url)
         return url
