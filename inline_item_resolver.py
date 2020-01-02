@@ -1,7 +1,6 @@
+from delivery.resolvers.inline_content_item_resolver import InlineContentResolver
 
-from delivery.resolvers.inline_content_item_resolver import InlineContentItemResolver
-
-class CustomInlineContentResolver(InlineContentItemResolver):
+class CustomInlineContentResolver(InlineContentResolver):
     def resolve_item(self, item_to_resolve):
         if item_to_resolve.type == 'article':
             return '<h1>item name: {0}</h1><p> summary: {1}</p>'.format(item_to_resolve.name, item_to_resolve.get_element_value('summary'))
