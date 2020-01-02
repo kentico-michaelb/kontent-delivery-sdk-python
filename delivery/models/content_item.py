@@ -1,13 +1,11 @@
 from delivery.models.asset import Asset
 from delivery.models.multiple_choice_option import MultipleChoiceOption
 from delivery.models.taxonomy_term import TaxonomyTerm
-from delivery.resolvers.inline_content_item_resolver import InlineContentItemResolver
-from inline_item_resolver import CustomInlineContentResolver
 import json
 import sys
 
 class ContentItem:
-    def __init__(self, delivery_item_response, use_inline_item_resolver='False', modular_content=None):
+    def __init__(self, delivery_item_response, custom_inline_resolver, use_inline_item_resolver='False', modular_content=None):
         content_item = delivery_item_response
         self.system = content_item['system']        
         self.id = self.system['id']
@@ -18,6 +16,7 @@ class ContentItem:
         self.elements = content_item['elements']
         self.modular_content = modular_content
         self.use_inline_item_resolver = use_inline_item_resolver
+        self.custom_inline_resolver = custom_inline_resolver
       
 
     def get_element(self, codename):
@@ -32,10 +31,11 @@ class ContentItem:
         try:
             if element_value_codename:
                 element_value = self.elements[element_value_codename]['value']
-                if self.use_inline_item_resolver =='True' and self.elements[element_value_codename]['type'] == 'rich_text':                   
-                    element_value = CustomInlineContentResolver.resolve(CustomInlineContentResolver(), element_value, self.modular_content)
+                if self.use_inline_item_resolver =='True' and self.elements[element_value_codename]['type'] == 'rich_text':          
+                    element_value = self.custom_inline_resolver.resolve(element_value, self.modular_content)
                 return element_value
-        except Exception:
+        except Exception as err:
+            print(err)
             print('Element does not have a value with codename: {} .'.format(element_value_codename))
             sys.exit(1)
             

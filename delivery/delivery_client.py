@@ -11,6 +11,7 @@ class DeliveryClient:
         self.preview_api_key = delivery_options.preview_api_key
         self.secured_api_key = delivery_options.secured_api_key
         self.use_inline_item_resolver = delivery_options.use_inline_item_resolver
+        self.custom_inline_resolver = delivery_options.custom_inline_resolver
 
         self.url_builder = UrlBuilder(delivery_options.project_id, delivery_options.use_preview)
 
@@ -27,9 +28,9 @@ class DeliveryClient:
         url = self.url_builder.get_item_url(codename)
         api_response = self.send_http_request(url)
 
-        delivery_item_response = DeliveryItemResponse(api_response)        
+        delivery_item_response = DeliveryItemResponse(api_response)
 
-        content_item = delivery_item_response.cast_to_content_item(delivery_item_response, self.use_inline_item_resolver)        
+        content_item = delivery_item_response.cast_to_content_item(delivery_item_response, self.custom_inline_resolver, self.use_inline_item_resolver)        
 
         return content_item
 

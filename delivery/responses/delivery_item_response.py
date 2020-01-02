@@ -7,7 +7,7 @@ class DeliveryItemResponse(BaseApiResponse):
     def __init__(self, base_api_response):
         super().__init__(base_api_response.content, base_api_response.headers, base_api_response.request_url)       
 
-    def cast_to_content_item(self, delivery_item_response, use_inline_item_resolver):
+    def cast_to_content_item(self, delivery_item_response, custom_inline_resolver, use_inline_item_resolver):
         delivery_item_response = delivery_item_response.content
-        content_item = ContentItem(delivery_item_response['item'], use_inline_item_resolver, delivery_item_response['modular_content'])
+        content_item = ContentItem(delivery_item_response['item'], custom_inline_resolver, use_inline_item_resolver, delivery_item_response['modular_content'])
         return content_item

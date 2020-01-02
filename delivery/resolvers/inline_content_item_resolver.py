@@ -11,7 +11,7 @@ class InlineContentResolver:
             obj = soup.find("object", attrs={"data-codename":key})            
             if obj:
                 from delivery.models.content_item import ContentItem
-                item_to_resolve = ContentItem(value)
+                item_to_resolve = ContentItem(value, self)
                 resolved_item = self.resolve_item(item_to_resolve)
                 obj.replace_with(resolved_item)
                 
