@@ -62,3 +62,4 @@ docs/_build/
 # PyBuilder
 target/
 .vscode/settings.json
+inline_item_resolver.py
