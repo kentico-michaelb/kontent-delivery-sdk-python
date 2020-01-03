@@ -5,7 +5,7 @@ import json
 import sys
 
 class ContentItem:
-    def __init__(self, delivery_item_response, custom_inline_resolver, use_inline_item_resolver='False', modular_content=None):
+    def __init__(self, delivery_item_response, custom_inline_resolver=None, custom_link_resolver=None, use_inline_item_resolver='False', modular_content=None):
         content_item = delivery_item_response
         self.system = content_item['system']        
         self.id = self.system['id']
@@ -17,6 +17,7 @@ class ContentItem:
         self.modular_content = modular_content
         self.use_inline_item_resolver = use_inline_item_resolver
         self.custom_inline_resolver = custom_inline_resolver
+        self.custom_link_resolver = custom_link_resolver
       
 
     def get_element(self, codename):
@@ -33,6 +34,7 @@ class ContentItem:
                 element_value = self.elements[element_value_codename]['value']
                 if self.use_inline_item_resolver =='True' and self.elements[element_value_codename]['type'] == 'rich_text':          
                     element_value = self.custom_inline_resolver.resolve(element_value, self.modular_content)
+                    element_value = self.custom_link_resolver.resolve(element_value, self.elements[element_value_codename]['links'])
                 return element_value
         except Exception as err:
             print(err)

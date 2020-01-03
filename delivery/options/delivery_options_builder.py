@@ -11,9 +11,6 @@ class DeliveryOptions():
         self.secured_api_key = self.get_options(config, 'secured_api_key')
         self.use_inline_item_resolver = self.get_options(config, 'use_inline_item_resolver') 
 
-        # self.content_link_resolver = config.get(delivery_options_section,'project_id')
-
-
     def get_options(self, config, option_name, option_section = 'delivery_options'):
         try:
             return config.get(option_section,option_name)
@@ -22,5 +19,8 @@ class DeliveryOptions():
 
     def with_inline_resolver(self, custom_inline_resolver):
         self.custom_inline_resolver = custom_inline_resolver
+
+    def with_link_resolver(self, custom_link_resolver):
+        self.custom_link_resolver = custom_link_resolver
         
 

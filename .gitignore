@@ -2,6 +2,8 @@
 config.ini
 app.py
 venv
+inline_item_resolver.py
+inline_link_resolver.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -62,4 +64,4 @@ docs/_build/
 # PyBuilder
 target/
 .vscode/settings.json
-inline_item_resolver.py
+
