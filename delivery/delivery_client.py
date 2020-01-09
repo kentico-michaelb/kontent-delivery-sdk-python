@@ -1,4 +1,6 @@
-import requests
+import asyncio
+import aiohttp
+
 from delivery.builders.url_builder import UrlBuilder
 from delivery.responses.base_api_response import BaseApiResponse
 from delivery.responses.delivery_item_response import DeliveryItemResponse
@@ -16,51 +18,53 @@ class DeliveryClient:
 
         self.url_builder = UrlBuilder(delivery_options.project_id, delivery_options.use_preview)
 
-
-    def get_item_response(self, codename):
+    async def get_item(self, codename):
         url = self.url_builder.get_item_url(codename)
-        api_response = self.send_http_request(url)
 
-        delivery_item_response = DeliveryItemResponse(api_response)
+        tasks = []
+        async with aiohttp.ClientSession() as session:
+            task = asyncio.ensure_future(self.set_delivery_item_response(url, session))    
+            tasks.append(task) 
+            result = await asyncio.gather(*tasks)                       
+            
+            return result[0]
 
-        return delivery_item_response
-
-    def get_item(self, codename):
-        url = self.url_builder.get_item_url(codename)
-        api_response = self.send_http_request(url)
-
-        delivery_item_response = DeliveryItemResponse(api_response)
-        content_item = delivery_item_response.cast_to_content_item(delivery_item_response, self.custom_inline_resolver, self.custom_link_resolver, self.use_inline_item_resolver)        
-
-        return content_item
-
-    def get_items(self,*args):
+    async def get_items(self,*args):
         url = self.url_builder.get_items_url(args)
-        api_response = self.send_http_request(url)
+        print(url)
+        tasks = []
+        async with aiohttp.ClientSession() as session:
+            task = asyncio.ensure_future(self.set_delivery_listing_response(url, session))    
+            tasks.append(task) 
+            result = await asyncio.gather(*tasks)      
+            
+            return result[0]
 
-        delivery_items_response = DeliveryItemListingResponse(api_response)
-
-        content_items = delivery_items_response.create_content_item_array(delivery_items_response)
-
-        return content_items    
-
-    def send_http_request(self, request_url):
+    async def send_http_request(self, request_url, session):
         headers = None        
         if self.use_preview:
-            headers = {"Authorization": "Bearer {}".format(self.preview_api_key)}
+            headers = {f"Authorization": "Bearer {self.preview_api_key}"}
         
-        response = requests.get(request_url, headers=headers)
-        response.raise_for_status()
+        async with session.get(request_url, headers=headers) as response:
+            api_response = await self.set_base_api_response(request_url, response, response.headers)
+            return api_response   
 
-        if response.status_code == 200:
-            api_response = self.set_base_api_response(request_url, response, response.headers)        
-            return api_response
+        return response.status
 
-        return response.status_code
-
-    def set_base_api_response(self, url, response, headers):
-        base_api_response = BaseApiResponse(response.json(), response.headers, url)
+    async def set_base_api_response(self, url, response, headers):
+        base_api_response = BaseApiResponse(await response.json(), headers, url)
         return base_api_response
 
+    async def set_delivery_item_response(self, url, session):
+        delivery_item_response = DeliveryItemResponse(await self.send_http_request(url, session))
+        content_item = await delivery_item_response.cast_to_content_item(delivery_item_response, self.custom_inline_resolver, self.custom_link_resolver, self.use_inline_item_resolver)        
+        
+        return content_item
+
+    async def set_delivery_listing_response(self, url, session):
+        delivery_items_response = DeliveryItemListingResponse(await self.send_http_request(url, session))
+        content_items = await delivery_items_response.create_content_item_array(delivery_items_response)
+        
+        return content_items
 
 
