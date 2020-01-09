@@ -30,7 +30,7 @@ class LimitParameter:
 
 class OrderParameter:
     def __init__(self, value, order):
-        self.value = '{0}[{1}]'.format(value, order)
+        self.value = f'{value}[{order}]'
         self.parameter = 'order='
         self.query_string = create_query_string(self.parameter, self.value)    
     
@@ -50,12 +50,12 @@ class IncludeTotalCountParameter:
 
 
 def create_query_string(parameter, value):
-    query_string = '{0}{1}'.format(parameter, value)
+    query_string = f'{parameter}{value}'
     return query_string 
 
 def ensure_integer(parameter_name,value):
     if isinstance(value, int):
         return value         
     else:
-        print('{} must be an integer.'.format(parameter_name))
+        print(f'{parameter_name} must be an integer.')
         sys.exit(1)

@@ -7,7 +7,7 @@ class DeliveryItemListingResponse(BaseApiResponse):
     def __init__(self, base_api_response):
         super().__init__(base_api_response.content, base_api_response.headers, base_api_response.request_url)       
 
-    def create_content_item_array(self, delivery_items_response):
+    async def create_content_item_array(self, delivery_items_response):
         delivery_items_response = delivery_items_response.content
         items = []
 

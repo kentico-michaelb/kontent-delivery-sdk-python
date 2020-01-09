@@ -70,7 +70,7 @@ class RangeFilter:
 
 
 def create_query_string(codename, query_filter, value):
-    query_string = '{0}{1}{2}'.format(codename, query_filter, value)
+    query_string = f'{codename}{query_filter}{value}'
     if 'type' in codename or 'codename' in codename:   
         query_string = query_string_formatter(query_string, codename)
     return query_string 
