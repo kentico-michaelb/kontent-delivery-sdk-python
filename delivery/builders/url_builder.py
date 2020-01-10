@@ -11,9 +11,9 @@ class UrlBuilder:
         self.url_template_taxonomies = '/taxonomies'
 
         if use_preview == 'True':
-            self.endpoint_url = 'https://preview-deliver.kontent.ai/{0}'.format(project_id)            
+            self.endpoint_url = f'https://preview-deliver.kontent.ai/{project_id}'          
         else:
-            self.endpoint_url = 'https://deliver.kontent.ai/{0}'.format(project_id)
+            self.endpoint_url = f'https://deliver.kontent.ai/{project_id}'
 
     def get_item_url(self, codename):
         url = self.endpoint_url 
@@ -27,7 +27,7 @@ class UrlBuilder:
 
         for count, arg in enumerate(*args):
             if count == 0:
-                url += '?{}'.format(arg.query_string)                
+                url += f'?{arg.query_string}'             
             else:
-                url += '&{}'.format(arg.query_string)                
+                url += f'&{arg.query_string}'             
         return url

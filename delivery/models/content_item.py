@@ -25,7 +25,7 @@ class ContentItem:
             if codename:
                 return self.elements[codename]
         except Exception:
-            print('Element with codename: {} does not exist.'.format(codename))
+            print(f'Element with codename: {codename} does not exist.')
             sys.exit(1)
 
     def get_element_value(self, element_value_codename):
@@ -38,7 +38,7 @@ class ContentItem:
                 return element_value
         except Exception as err:
             print(err)
-            print('Element does not have a value with codename: {} .'.format(element_value_codename))
+            print(f'Element does not have a value with codename: {element_value_codename} .')
             sys.exit(1)
             
 
@@ -52,7 +52,7 @@ class ContentItem:
                     assets.append(strongly_typed_asset)                    
                 return assets                
         except Exception:
-             print('Asset with codename: {} does not exist.'.format(element_codename))
+             print(f'Asset with codename: {element_codename} does not exist.')
              sys.exit(1)
 
     def get_asset(self, element_codename, asset_name):                        
@@ -64,9 +64,9 @@ class ContentItem:
                     if asset_name in asset.name:                         
                         return asset
                     else:
-                        return 'Asset with name: {} does not exist in the {} element'.format(asset_name, element_codename)
+                        return f'Asset with name: {asset_name} does not exist in the {element_codename} element'
         except Exception:
-             print('Asset with codename: {} does not exist.'.format(element_codename))
+             print(f'Asset with codename: {element_codename} does not exist.')
              sys.exit(1)
 
     def get_options(self, element_codename):
@@ -79,7 +79,7 @@ class ContentItem:
                 multiple_choice_options.append(strongly_typed_option)
             return multiple_choice_options
         except Exception:
-            print('No options selected for {} element.'.format(element_codename))
+            print(f'No options selected for {element_codename} element.')
             sys.exit(1)  
 
     def get_taxonomy_terms(self, element_codename):
@@ -92,7 +92,7 @@ class ContentItem:
                 taxonomy_terms.append(strongly_typed_term)
             return taxonomy_terms
         except Exception:
-            print('No taxonomy terms for {} element.'.format(element_codename))
+            print(f'No taxonomy terms for {element_codename} element.')
             sys.exit(1)
         
     def get_linked_items(self, element_codename):
@@ -105,7 +105,7 @@ class ContentItem:
                 linked_items.append(linked_item)
             return linked_items
         except Exception:
-            print('Linked Element with codename: {} does not exist.'.format(element_codename))
+            print(f'Linked Element with codename: {element_codename} does not exist.')
             sys.exit(1)
         
 
