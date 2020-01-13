@@ -5,6 +5,8 @@ from delivery.builders.url_builder import UrlBuilder
 from delivery.responses.base_api_response import BaseApiResponse
 from delivery.responses.delivery_item_response import DeliveryItemResponse
 from delivery.responses.delivery_item_listing_response import DeliveryItemListingResponse
+from delivery.responses.delivery_content_type_response import DeliveryContentTypeResponse
+from delivery.responses.delivery_content_type_listing_response import DeliveryContentTypeListingResponse
 
 class DeliveryClient: 
     def __init__(self, delivery_options):
@@ -20,25 +22,28 @@ class DeliveryClient:
 
     async def get_item(self, codename):
         url = self.url_builder.get_item_url(codename)
+        result = await self.build_client_session(self.set_delivery_item_response, url)        
 
-        tasks = []
-        async with aiohttp.ClientSession() as session:
-            task = asyncio.ensure_future(self.set_delivery_item_response(url, session))    
-            tasks.append(task) 
-            result = await asyncio.gather(*tasks)                       
-            
-            return result[0]
+        return result
 
     async def get_items(self,*args):
         url = self.url_builder.get_items_url(args)
-        print(url)
-        tasks = []
-        async with aiohttp.ClientSession() as session:
-            task = asyncio.ensure_future(self.set_delivery_listing_response(url, session))    
-            tasks.append(task) 
-            result = await asyncio.gather(*tasks)      
-            
-            return result[0]
+        result = await self.build_client_session(self.set_delivery_listing_response, url)        
+
+        return result
+
+    async def get_content_type(self, codename):
+        url = self.url_builder.get_content_type_url(codename)
+        result = await self.build_client_session(self.set_delivery_content_type_response, url)
+
+        return result
+
+    async def get_content_types(self):
+        url = self.url_builder.get_content_types_url()
+        result = await self.build_client_session(self.set_delivery_content_type_listing_response, url)
+
+        return result
+
 
     async def send_http_request(self, request_url, session):
         headers = None        
@@ -67,4 +72,25 @@ class DeliveryClient:
         
         return content_items
 
+    async def set_delivery_content_type_response(self, url, session):
+        delivery_content_type_response = DeliveryContentTypeResponse(await self.send_http_request(url, session))
+        content_type = await delivery_content_type_response.cast_to_content_type(delivery_content_type_response)        
+        
+        return content_type
+
+    async def set_delivery_content_type_listing_response(self, url, session):
+        delivery_content_type_listing_response = DeliveryContentTypeListingResponse(await self.send_http_request(url, session))
+        content_types = await delivery_content_type_listing_response.create_content_type_array(delivery_content_type_listing_response)        
+        
+        return content_types        
+
+
+    async def build_client_session(self, method, url):
+        tasks = []
+        async with aiohttp.ClientSession() as session:
+            task = asyncio.ensure_future(method(url, session))    
+            tasks.append(task) 
+            result = await asyncio.gather(*tasks)                       
+            
+            return result[0]
 
