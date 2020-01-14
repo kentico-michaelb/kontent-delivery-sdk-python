@@ -1,6 +1,7 @@
 from delivery.models.asset import Asset
 from delivery.models.multiple_choice_option import MultipleChoiceOption
 from delivery.models.taxonomy_element import TaxonomyElement
+from delivery.models.taxonomy_term import TaxonomyTerm
 import json
 import sys
 

@@ -9,7 +9,7 @@ class MultipleChoiceElement(ContentElement):
     def get_options(self, options):
         typed_options = []
         for option in options:
-            typed_option = MultipleChoiceOption(option['name'], option['codename'])
+            typed_option = MultipleChoiceOption(option)
             typed_options.append(typed_option)
             
         return typed_options
