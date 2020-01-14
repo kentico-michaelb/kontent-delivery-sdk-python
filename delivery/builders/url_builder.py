@@ -29,5 +29,18 @@ class UrlBuilder:
             if count == 0:
                 url += f'?{arg.query_string}'             
             else:
-                url += f'&{arg.query_string}'             
+                url += f'&{arg.query_string}' 
+                            
+        return url
+
+    def get_content_type_url(self, codename):
+        url = self.endpoint_url 
+        url += self.url_template_type.format(codename)
+
+        return url
+
+    def get_content_types_url(self):
+        url = self.endpoint_url 
+        url += self.url_template_types
+
         return url
