@@ -1,5 +1,6 @@
 from delivery.models.content_element import ContentElement
 from delivery.models.multiple_choice_element import MultipleChoiceElement
+from delivery.models.taxonomy_element import TaxonomyElement
 
 class ContentType:
     def __init__(self, delivery_content_type_response):
@@ -16,6 +17,9 @@ class ContentType:
             if element_value['type'] == 'multiple_choice':
                 content_element = MultipleChoiceElement(element_codename, element_value)
                 typed_elements.append(content_element)
+            elif element_value['type'] == 'taxonomy':
+                content_element = TaxonomyElement(element_value)
+                typed_elements.append(content_element)                
             else:
                 content_element = ContentElement(element_codename, element_value)
                 typed_elements.append(content_element)
