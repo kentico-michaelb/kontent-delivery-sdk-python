@@ -9,7 +9,9 @@ class DeliveryOptions():
         self.use_preview = self.get_options(config, 'use_preview')
         self.preview_api_key = self.get_options(config, 'preview_api_key')
         self.secured_api_key = self.get_options(config, 'secured_api_key')
-        self.use_inline_item_resolver = self.get_options(config, 'use_inline_item_resolver') 
+        self.use_inline_item_resolver = self.get_options(config, 'use_inline_item_resolver')
+        self.custom_inline_resolver = None
+        self.custom_link_resolver = None
 
     def get_options(self, config, option_name, option_section = 'delivery_options'):
         try:
