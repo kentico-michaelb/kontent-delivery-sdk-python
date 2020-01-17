@@ -17,10 +17,10 @@ class DeliveryClient:
         self.preview_api_key = delivery_options.preview_api_key
         self.secured_api_key = delivery_options.secured_api_key
         self.use_inline_item_resolver = delivery_options.use_inline_item_resolver
+        self.url_builder = UrlBuilder(delivery_options.project_id, delivery_options.use_preview)
         self.custom_inline_resolver = delivery_options.custom_inline_resolver
         self.custom_link_resolver = delivery_options.custom_link_resolver
-
-        self.url_builder = UrlBuilder(delivery_options.project_id, delivery_options.use_preview)
+        
 
     async def get_item(self, codename):
         url = self.url_builder.get_item_url(codename)
