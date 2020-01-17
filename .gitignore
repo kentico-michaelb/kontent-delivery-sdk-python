@@ -4,6 +4,7 @@ app.py
 venv
 inline_item_resolver.py
 inline_link_resolver.py
+setup.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
