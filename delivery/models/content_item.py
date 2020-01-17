@@ -33,9 +33,13 @@ class ContentItem:
         try:
             if element_value_codename:
                 element_value = self.elements[element_value_codename]['value']
-                if self.use_inline_item_resolver =='True' and self.elements[element_value_codename]['type'] == 'rich_text':          
-                    element_value = self.custom_inline_resolver.resolve(element_value, self.modular_content)
-                    element_value = self.custom_link_resolver.resolve(element_value, self.elements[element_value_codename]['links'])
+                if self.use_inline_item_resolver =='True' and self.elements[element_value_codename]['type'] == 'rich_text':
+                    try:          
+                        element_value = self.custom_inline_resolver.resolve(element_value, self.modular_content)
+                        element_value = self.custom_link_resolver.resolve(element_value, self.elements[element_value_codename]['links'])
+                    except:
+                        print(f'Custom resolver required when "use_inline_item_resolver = True" in the config.ini.')
+                        sys.exit(1)
                 return element_value
         except Exception as err:
             print(err)
