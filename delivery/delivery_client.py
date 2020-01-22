@@ -22,8 +22,8 @@ class DeliveryClient:
         self.custom_link_resolver = delivery_options.custom_link_resolver
         
 
-    async def get_item(self, codename):
-        url = self.url_builder.get_item_url(codename)
+    async def get_item(self, codename, *args):
+        url = self.url_builder.get_item_url(codename, args)
         result = await self.build_client_session(self.set_delivery_item_response, url)        
 
         return result
