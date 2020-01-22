@@ -106,7 +106,13 @@ class ContentItem:
 
         try:    
             for linked_item_codename in element:
-                linked_item = ContentItem(self.modular_content[linked_item_codename])
+                linked_item = ContentItem(
+                                self.modular_content[linked_item_codename], 
+                                self.custom_inline_resolver, 
+                                self.custom_link_resolver, 
+                                self.use_inline_item_resolver,
+                                self.modular_content 
+                                )
                 linked_items.append(linked_item)
             return linked_items
         except Exception:
