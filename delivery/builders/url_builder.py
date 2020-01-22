@@ -15,10 +15,15 @@ class UrlBuilder:
         else:
             self.endpoint_url = f'https://deliver.kontent.ai/{project_id}'
 
-    def get_item_url(self, codename):
+    def get_item_url(self, codename, *args):
         url = self.endpoint_url 
         url += self.url_template_item.format(codename)
 
+        for count, arg in enumerate(*args):
+            if count == 0:
+                url += f'?{arg.query_string}'             
+            else:
+                url += f'&{arg.query_string}'                  
         return url
 
     def get_items_url(self,*args):
