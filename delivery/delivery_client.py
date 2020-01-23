@@ -84,7 +84,7 @@ class DeliveryClient:
 
     async def set_delivery_listing_response(self, url, session):
         delivery_items_response = DeliveryItemListingResponse(await self.send_http_request(url, session))
-        content_items = await delivery_items_response.create_content_item_array(delivery_items_response)
+        content_items = await delivery_items_response.create_content_item_array(delivery_items_response, self.custom_inline_resolver, self.custom_link_resolver, self.use_inline_item_resolver)
         
         return content_items
 
